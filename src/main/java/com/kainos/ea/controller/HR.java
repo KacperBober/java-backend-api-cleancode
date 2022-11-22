@@ -1,22 +1,21 @@
 package com.kainos.ea.controller;
 
 import com.kainos.ea.exception.DatabaseConnectionException;
+import com.kainos.ea.dao.JobRoleDAO;
+import com.kainos.ea.model.JobRole;
+import com.kainos.ea.service.JobRoleService;
 import com.kainos.ea.util.DatabaseConnector;
-import org.eclipse.jetty.http.HttpStatus;
 
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 // @Api("API for HR app")
 @Path("/hr")
@@ -41,5 +40,15 @@ public class HR {
         while (rs.next()) {
             System.out.println(rs.getString("test"));
         }
+    }
+
+    @GET
+    @Path("/job-roles")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<JobRole> getJobRoles() throws DatabaseConnectionException, SQLException {
+
+        JobRoleService roleService = new JobRoleService();
+        return roleService.getJobRoles();
+
     }
 }

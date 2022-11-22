@@ -1,10 +1,17 @@
 package com.kainos.ea.model;
 
-import com.kainos.ea.dao.JobRoleDAO;
+public class JobRole {
 
-public class JobRoleService {
+    private String name;
+    public JobRole(String name) {
+        this.name = name;
+    }
 
-    public List<JobRoleDAO> getJobRoles(){
-        return
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
