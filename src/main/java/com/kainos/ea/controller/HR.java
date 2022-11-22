@@ -31,5 +31,15 @@ public class HR {
     @Produces(MediaType.APPLICATION_JSON)
     public void getEmployees() throws DatabaseConnectionException, SQLException {
 
+        Connection conn = c.getConnection();
+        Statement st = conn.createStatement();
+
+        ResultSet rs = st.executeQuery(
+                "SELECT * from test;");
+
+
+        while (rs.next()) {
+            System.out.println(rs.getString("test"));
+        }
     }
 }
