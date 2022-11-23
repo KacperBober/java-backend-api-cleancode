@@ -5,12 +5,14 @@ import com.kainos.ea.dao.JobRoleDAO;
 import com.kainos.ea.model.JobRole;
 import com.kainos.ea.service.JobRoleService;
 import com.kainos.ea.util.DatabaseConnector;
+import org.eclipse.jetty.http.HttpStatus;
 
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,10 +47,16 @@ public class HR {
     @GET
     @Path("/job-roles")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<JobRole> getJobRoles() throws DatabaseConnectionException, SQLException {
+    public Response getJobRoles() {
 
         JobRoleService roleService = new JobRoleService();
-        return roleService.getJobRoles();
+
+        try {
+            return Response.ok(roleService.getJobRoles()).build();
+        } catch (SQLException | DatabaseConnectionException e) {
+            System.out.println(e);
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        }
 
     }
 }

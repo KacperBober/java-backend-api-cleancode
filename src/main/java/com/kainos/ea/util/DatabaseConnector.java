@@ -7,9 +7,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnector {
-    private static Connection conn;
+    private Connection conn;
 
-    public static Connection getConnection() throws DatabaseConnectionException, SQLException {
+    public Connection getConnection() throws DatabaseConnectionException, SQLException {
         String user;
         String password;
         String host;
