@@ -3,8 +3,19 @@ package com.kainos.ea.model;
 public class JobRole {
 
     private String name;
-    public JobRole(String name) {
+
+    public String getCapability() {
+        return capability;
+    }
+
+    public void setCapability(String capability) {
+        this.capability = capability;
+    }
+
+    private String capability;
+    public JobRole(String name, String capability) {
         this.name = name;
+        this.capability = capability;
     }
 
     public String getName() {
