@@ -2,19 +2,27 @@ package com.kainos.ea.model;
 
 public class JobRole {
 
-    private String name;
+    public JobRole(String name, String capability, String bandLevel) {
+        this.name = name;
+        this.capability = capability;
+        this.bandLevel = bandLevel;
+    }
+
+    private String name, capability, bandLevel;
+
+    public String getBandLevel() {
+        return bandLevel;
+    }
+
+    public void setBandLevel(String bandLevel) {
+        this.bandLevel = bandLevel;
+    }
 
     public String getCapability() {
         return capability;
     }
 
     public void setCapability(String capability) {
-        this.capability = capability;
-    }
-
-    private String capability;
-    public JobRole(String name, String capability) {
-        this.name = name;
         this.capability = capability;
     }
 
