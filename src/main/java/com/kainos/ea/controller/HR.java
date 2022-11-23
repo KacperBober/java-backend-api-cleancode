@@ -23,8 +23,10 @@ import java.util.List;
 @Path("/hr")
 public class HR {
     private DatabaseConnector c;
+    private static JobRoleService roleService;
     public HR() {
-        this.c = new DatabaseConnector();
+        DatabaseConnector databaseConnector = new DatabaseConnector();
+        roleService = new JobRoleService(new JobRoleDAO(), databaseConnector);
     }
 
     @GET
@@ -48,8 +50,6 @@ public class HR {
     @Path("/job-roles")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJobRoles() {
-
-        JobRoleService roleService = new JobRoleService();
 
         try {
             return Response.ok(roleService.getJobRoles()).build();

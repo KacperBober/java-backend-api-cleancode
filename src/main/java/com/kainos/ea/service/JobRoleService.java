@@ -11,12 +11,12 @@ import java.util.List;
 
 public class JobRoleService {
 
-    private JobRoleDAO jobRoleDao;
-    private DatabaseConnector dbConnector;
+    public JobRoleDAO jobRoleDao;
+    public DatabaseConnector dbConnector;
 
-    public JobRoleService() {
-        this.jobRoleDao = new JobRoleDAO();
-        this.dbConnector = new DatabaseConnector();
+    public JobRoleService(JobRoleDAO jobRoleDAO, DatabaseConnector dbConnector) {
+        this.jobRoleDao =  jobRoleDAO;
+        this.dbConnector = dbConnector;
     }
 
     public List<JobRole> getJobRoles() throws DatabaseConnectionException, SQLException {
