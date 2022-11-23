@@ -22,7 +22,7 @@ public class JobRoleDAO {
 
         while (rs.next()) {
             JobRole jr = new JobRole(
-                    rs.getString("Name")
+                    rs.getString("JobRole")
             );
 
             jobRoles.add(jr);
