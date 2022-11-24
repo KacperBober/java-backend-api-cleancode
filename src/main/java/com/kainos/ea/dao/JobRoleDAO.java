@@ -15,17 +15,17 @@ public class JobRoleDAO {
         Statement st = c.createStatement();
 
         ResultSet rs = st.executeQuery(
-                "SELECT JobRoles.Name , Capabilities.Capability, BandLevels.BandLevel "
-                        + "FROM JobRoles JOIN Capabilities ON (JobRoles.CapabilityID = Capabilities.ID)" +
-                        "JOIN BandLevels ON (JobRoles.BandLevelID = BandLevels.ID);");
+                "SELECT JobRoles.JobRole , Capabilities.Capability, BandLevels.BandName "
+                        + "FROM JobRoles JOIN Capabilities ON (JobRoles.CapabilityID = Capabilities.CapabilityID)" +
+                        "JOIN BandLevels ON (JobRoles.BandLevelID = BandLevels.BandLevelID);");
 
         List<JobRole> jobRoles = new ArrayList<>();
 
         while (rs.next()) {
             JobRole jr = new JobRole(
-                    rs.getString("Name"),
+                    rs.getString("JobRole"),
                     rs.getString("Capability"),
-                    rs.getString("BandLevel")
+                    rs.getString("BandName")
             );
 
             jobRoles.add(jr);
