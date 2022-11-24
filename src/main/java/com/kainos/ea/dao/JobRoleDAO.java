@@ -1,6 +1,7 @@
 package com.kainos.ea.dao;
 
 import com.kainos.ea.model.JobRole;
+import com.kainos.ea.model.JobSpec;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -31,4 +32,24 @@ public class JobRoleDAO {
         }
         return jobRoles;
     }
+
+    public JobSpec getJobSpec(Connection c, int JobSpecID) throws SQLException {
+        Statement st = c.createStatement();
+
+        ResultSet rs = st.executeQuery(
+                "SELECT JobRoleSpec, JobRoleSpecLink "
+                        + "FROM JobRoles " +
+                        "WHERE JobRoleID = " + JobSpecID + ";");
+
+        while (rs.next()) {
+            JobSpec jobSpec = new JobSpec(
+                    rs.getString("JobRoleSpec"),
+                    rs.getString("JobRoleSpecLink")
+            );
+            return jobSpec;
+        }
+        return null;
+    }
+
+
 }
