@@ -33,13 +33,13 @@ public class JobRoleDAO {
         return jobRoles;
     }
 
-    public JobSpec getJobSpec(Connection c, int JobSpecID) throws SQLException {
+    public JobSpec getJobSpec(Connection c, int job_spec_id) throws SQLException {
         Statement st = c.createStatement();
 
         ResultSet rs = st.executeQuery(
                 "SELECT JobRoleSpec, JobRoleSpecLink "
                         + "FROM JobRoles " +
-                        "WHERE JobRoleID = " + JobSpecID + ";");
+                        "WHERE JobRoleID = " + job_spec_id + ";");
 
         while (rs.next()) {
             JobSpec jobSpec = new JobSpec(

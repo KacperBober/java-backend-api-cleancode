@@ -10,6 +10,7 @@ import org.eclipse.jetty.http.HttpStatus;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -53,6 +54,20 @@ public class HR {
 
         try {
             return Response.ok(roleService.getJobRoles()).build();
+        } catch (SQLException | DatabaseConnectionException e) {
+            System.out.println(e);
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        }
+
+    }
+
+    @GET
+    @Path("/job-specification/{JobRoleID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getJobSpecification(@PathParam("JobRoleID") int job_role_id) {
+
+        try {
+            return Response.ok(roleService.getJobSpec(job_role_id)).build();
         } catch (SQLException | DatabaseConnectionException e) {
             System.out.println(e);
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
