@@ -4,6 +4,7 @@ package com.kainos.ea;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kainos.ea.model.JobRole;
+import com.kainos.ea.model.JobSpec;
 import io.dropwizard.configuration.ResourceConfigurationSourceProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,5 +33,16 @@ class HRIntegrationTest {
         Assertions.assertEquals(response.get(0).get("capability"), "Engineering");
         Assertions.assertEquals(response.get(0).get("name"), "Software Engineer");
 
+    }
+
+    @Test
+    void getJobSpec_shouldReturnNull_whenJobRoleIdNotFound() {
+        String job_role_id = "-10";
+
+        JobSpec response = APP.client().target("http://localhost:8080/hr/job-specification/" + job_role_id)
+                .request()
+                .get(JobSpec.class);
+
+        Assertions.assertEquals(null, response);
     }
 }
