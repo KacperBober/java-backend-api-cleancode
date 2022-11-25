@@ -25,8 +25,8 @@ public class JobRoleDAO {
             JobRole jr = new JobRole(
                     rs.getString("JobRole"),
                     rs.getString("Capability"),
-                    rs.getString("BandName")
-            );
+                    rs.getString("BandName"));
+
 
             jobRoles.add(jr);
         }
