@@ -45,4 +45,22 @@ class HRIntegrationTest {
 
         Assertions.assertEquals(null, response);
     }
+
+    @Test
+    void getJobSpec_shouldReturnJobSpec_whenJobRoleIDExists() {
+        String job_role_id = "1";
+        JobSpec jobSpec = new JobSpec("As a Software Engineer (Associate) in Kainos, " +
+                "you’ll be responsible for developing high quality solutions which delight our " +
+                "customers and impact the lives of users worldwide. You’ll do this whilst learning " +
+                "about new technologies and approaches, with talented colleagues" +
+                " that will help you to learn, develop and grow.", "https://kainossoftwareltd.sharepoint.com/peop");
+
+
+        JobSpec response = APP.client().target("http://localhost:8080/hr/job-specification/" + job_role_id)
+                .request()
+                .get(JobSpec.class);
+
+        Assertions.assertEquals(jobSpec.getJob_spec(), response.getJob_spec());
+        Assertions.assertEquals(jobSpec.getJob_spec_link(), response.getJob_spec_link());
+    }
 }
