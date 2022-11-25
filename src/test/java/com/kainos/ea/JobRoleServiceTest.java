@@ -3,6 +3,7 @@ package com.kainos.ea;
 import com.kainos.ea.dao.JobRoleDAO;
 import com.kainos.ea.exception.DatabaseConnectionException;
 import com.kainos.ea.model.JobRole;
+import com.kainos.ea.model.JobSpec;
 import com.kainos.ea.service.JobRoleService;
 import com.kainos.ea.util.DatabaseConnector;
 import java.sql.Connection;
@@ -63,4 +64,50 @@ class JobRoleServiceTest {
 
         assertEquals(result, job);
     }
+
+    @Test
+    void getJobSpec_shouldReturnJobSpec_whenDaoReturnsJobSpec() throws SQLException, DatabaseConnectionException {
+
+        JobSpec jobSpec = new JobSpec("data engineer does smth...", "link");
+        int job_role_id = 1;
+
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(jobRoleDAO.getJobSpec(conn, job_role_id)).thenReturn(jobSpec);
+
+        JobSpec result_job_spec = jobRoleService.getJobSpec(job_role_id);
+
+        assertEquals(result_job_spec, jobSpec);
+    }
+
+    @Test
+    void getJobSpec_shouldReturnNull_whenDaoReturnsNull() throws SQLException, DatabaseConnectionException {
+        int job_role_id = -10;
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(jobRoleDAO.getJobSpec(conn, job_role_id)).thenReturn(null);
+
+        JobSpec result = jobRoleService.getJobSpec(job_role_id);
+
+        assertNull(result);
+    }
+
+    @Test
+    void getJobSpec_shouldThrowSqlException_whenDaoThrowsSqlException() throws SQLException, DatabaseConnectionException {
+
+        int job_role_id = 1;
+        Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
+        Mockito.when(jobRoleDAO.getJobSpec(conn, job_role_id)).thenThrow(SQLException.class);
+
+        assertThrows(SQLException.class,
+                () -> jobRoleService.getJobSpec(job_role_id));
+    }
+
+    @Test
+    void getJobSpec_shouldThrowDatabaseConnectionException_whenDatabaseConnectorThrowsDatabaseConnectionException() throws SQLException, DatabaseConnectionException {
+        int job_role_id = 1;
+        Mockito.when(databaseConnector.getConnection()).thenThrow(DatabaseConnectionException.class);
+
+        assertThrows(DatabaseConnectionException.class,
+                () -> jobRoleService.getJobSpec(job_role_id));
+    }
+
 }

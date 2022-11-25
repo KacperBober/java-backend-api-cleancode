@@ -4,6 +4,10 @@ public class JobSpec {
     private String job_spec;
     private String job_spec_link;
 
+    public JobSpec() {
+
+    }
+
     public JobSpec(String job_spec, String job_spec_link) {
         this.job_spec = job_spec;
         this.job_spec_link = job_spec_link;
