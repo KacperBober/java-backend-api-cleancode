@@ -5,17 +5,17 @@ public class JobRole {
     public JobRole(String name, String capability, String bandLevel) {
         this.name = name;
         this.capability = capability;
-        this.bandLevel = bandLevel;
+        this.bandName = bandLevel;
     }
 
-    private String name, capability, bandLevel;
+    private String name, capability, bandName;
 
-    public String getBandLevel() {
-        return bandLevel;
+    public String getBandName() {
+        return bandName;
     }
 
-    public void setBandLevel(String bandLevel) {
-        this.bandLevel = bandLevel;
+    public void setBandName(String bandName) {
+        this.bandName = bandName;
     }
 
     public String getCapability() {

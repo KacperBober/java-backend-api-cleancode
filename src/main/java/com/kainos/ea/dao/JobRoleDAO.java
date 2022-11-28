@@ -15,9 +15,9 @@ public class JobRoleDAO {
         Statement st = c.createStatement();
 
         ResultSet rs = st.executeQuery(
-                "SELECT JobRoles.JobRole , Capabilities.Capability, BandLevels.BandName "
+                "SELECT JobRoles.JobRole , Capabilities.Capability, Bands.BandName "
                         + "FROM JobRoles JOIN Capabilities ON (JobRoles.CapabilityID = Capabilities.CapabilityID)" +
-                        "JOIN BandLevels ON (JobRoles.BandLevelID = BandLevels.BandLevelID);");
+                        "JOIN Bands ON (JobRoles.BandLevelID = Bands.BandLevelID);");
 
         List<JobRole> jobRoles = new ArrayList<>();
 
