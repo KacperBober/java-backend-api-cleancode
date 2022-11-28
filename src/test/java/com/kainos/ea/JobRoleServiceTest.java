@@ -2,6 +2,7 @@ package com.kainos.ea;
 
 import com.kainos.ea.dao.JobRoleDAO;
 import com.kainos.ea.exception.DatabaseConnectionException;
+import com.kainos.ea.exception.JobRoleDoesNotExistException;
 import com.kainos.ea.model.JobRole;
 import com.kainos.ea.model.JobSpec;
 import com.kainos.ea.service.JobRoleService;
@@ -66,7 +67,7 @@ class JobRoleServiceTest {
     }
 
     @Test
-    void getJobSpec_shouldReturnJobSpec_whenDaoReturnsJobSpec() throws SQLException, DatabaseConnectionException {
+    void getJobSpec_shouldReturnJobSpec_whenDaoReturnsJobSpec() throws SQLException, DatabaseConnectionException, JobRoleDoesNotExistException {
 
         JobSpec jobSpec = new JobSpec("data engineer does smth...", "link");
         int job_role_id = 1;
@@ -80,14 +81,13 @@ class JobRoleServiceTest {
     }
 
     @Test
-    void getJobSpec_shouldReturnNull_whenDaoReturnsNull() throws SQLException, DatabaseConnectionException {
+    void getJobSpec_shouldThrowJobRoleDoesNotExistException_whenDaoReturnsNull() throws SQLException, DatabaseConnectionException {
         int job_role_id = -10;
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
         Mockito.when(jobRoleDAO.getJobSpec(conn, job_role_id)).thenReturn(null);
 
-        JobSpec result = jobRoleService.getJobSpec(job_role_id);
-
-        assertNull(result);
+        assertThrows(JobRoleDoesNotExistException.class,
+                () -> jobRoleService.getJobSpec(job_role_id));
     }
 
     @Test

@@ -36,14 +36,14 @@ class HRIntegrationTest {
     }
 
     @Test
-    void getJobSpec_shouldReturnNull_whenJobRoleIdNotFound() {
-        String job_role_id = "-10";
+    void getJobSpec_shouldReturn400StatusCode_whenJobRoleIdNotFound() {
+        int job_role_id = -10;
 
-        JobSpec response = APP.client().target("http://localhost:8080/hr/job-specification/" + job_role_id)
+        int response_code = APP.client().target("http://localhost:8080/hr/job-specification/" + job_role_id)
                 .request()
-                .get(JobSpec.class);
+                .get().getStatus();
 
-        Assertions.assertEquals(null, response);
+        Assertions.assertEquals(response_code, 400);
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.kainos.ea.controller;
 
 import com.kainos.ea.exception.DatabaseConnectionException;
 import com.kainos.ea.dao.JobRoleDAO;
+import com.kainos.ea.exception.JobRoleDoesNotExistException;
 import com.kainos.ea.model.JobRole;
 import com.kainos.ea.service.JobRoleService;
 import com.kainos.ea.util.DatabaseConnector;
@@ -71,6 +72,8 @@ public class HR {
         } catch (SQLException | DatabaseConnectionException e) {
             System.out.println(e);
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        } catch (JobRoleDoesNotExistException e) {
+            return Response.status(HttpStatus.BAD_REQUEST_400).build();
         }
 
     }
