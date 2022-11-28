@@ -36,20 +36,20 @@ class HRIntegrationTest {
     }
 
     @Test
-    void getJobSpec_shouldReturn400StatusCode_whenJobRoleIdNotFound() {
+    void getJobSpec_shouldReturn404StatusCode_whenJobRoleIdNotFound() {
         int job_role_id = -10;
 
         int response_code = APP.client().target("http://localhost:8080/hr/job-specification/" + job_role_id)
                 .request()
                 .get().getStatus();
 
-        Assertions.assertEquals(response_code, 400);
+        Assertions.assertEquals(response_code, 404);
     }
 
     @Test
     void getJobSpec_shouldReturnJobSpec_whenJobRoleIDExists() {
-        String job_role_id = "1";
-        JobSpec jobSpec = new JobSpec("As a Software Engineer (Associate) in Kainos, " +
+        int job_role_id = 1;
+        JobSpec jobSpec = new JobSpec("Software Engineer", "As a Software Engineer (Associate) in Kainos, " +
                 "you’ll be responsible for developing high quality solutions which delight our " +
                 "customers and impact the lives of users worldwide. You’ll do this whilst learning " +
                 "about new technologies and approaches, with talented colleagues" +

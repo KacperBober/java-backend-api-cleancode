@@ -37,12 +37,13 @@ public class JobRoleDAO {
         Statement st = c.createStatement();
 
         ResultSet rs = st.executeQuery(
-                "SELECT JobRoleSpec, JobRoleSpecLink "
+                "SELECT JobRole, JobRoleSpec, JobRoleSpecLink "
                         + "FROM JobRoles " +
                         "WHERE JobRoleID = " + job_spec_id + ";");
 
         while (rs.next()) {
             JobSpec jobSpec = new JobSpec(
+                    rs.getString("JobRole"),
                     rs.getString("JobRoleSpec"),
                     rs.getString("JobRoleSpecLink")
             );

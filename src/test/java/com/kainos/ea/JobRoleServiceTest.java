@@ -69,7 +69,7 @@ class JobRoleServiceTest {
     @Test
     void getJobSpec_shouldReturnJobSpec_whenDaoReturnsJobSpec() throws SQLException, DatabaseConnectionException, JobRoleDoesNotExistException {
 
-        JobSpec jobSpec = new JobSpec("data engineer does smth...", "link");
+        JobSpec jobSpec = new JobSpec("Data Engineer", "data engineer does smth...", "link");
         int job_role_id = 1;
 
         Mockito.when(databaseConnector.getConnection()).thenReturn(conn);
