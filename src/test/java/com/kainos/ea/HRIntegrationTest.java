@@ -62,5 +62,6 @@ class HRIntegrationTest {
 
         Assertions.assertEquals(jobSpec.getJob_spec(), response.getJob_spec());
         Assertions.assertEquals(jobSpec.getJob_spec_link(), response.getJob_spec_link());
+        Assertions.assertEquals(jobSpec.getJob_role(), response.getJob_role());
     }
 }
