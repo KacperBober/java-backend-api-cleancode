@@ -1,13 +1,16 @@
 package com.kainos.ea;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kainos.ea.model.JobRole;
 import io.dropwizard.configuration.ResourceConfigurationSourceProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import io.dropwizard.testing.junit5.DropwizardAppExtension;
 import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
@@ -20,13 +23,19 @@ class HRIntegrationTest {
 
     @Test
     void getJobRoles_shouldReturnListOfJobRoles() {
-        List<LinkedHashMap> response = APP.client().target("http://localhost:8080/hr/job-roles")
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode response = APP.client().target("http://localhost:8080/hr/job-roles")
                 .request()
-                .get(List.class);
+                .get(JsonNode.class);
 
-        Assertions.assertTrue(response.size() > 0);
-        Assertions.assertEquals(response.get(0).get("capability"), "Engineering");
-        Assertions.assertEquals(response.get(0).get("name"), "Software Engineer");
-        Assertions.assertEquals(response.get(0).get("bandName"), "Associate");
+        List<JobRole> JobRoleList = mapper.convertValue(
+                response,
+                new TypeReference<List<JobRole>>(){}
+        );
+
+        Assertions.assertTrue(JobRoleList.size() > 0);
+        Assertions.assertEquals(JobRoleList.get(0).getCapability(), "Engineering");
+        Assertions.assertEquals(JobRoleList.get(0).getName(), "Software Engineer");
+        Assertions.assertEquals(JobRoleList.get(0).getBandName(), "Associate");
     }
 }

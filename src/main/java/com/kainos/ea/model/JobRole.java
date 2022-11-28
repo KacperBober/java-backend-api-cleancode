@@ -2,6 +2,10 @@ package com.kainos.ea.model;
 
 public class JobRole {
 
+    //empty constructor necessary for creation JSON in integration testing
+    public JobRole () {
+    }
+
     public JobRole(String name, String capability, String bandLevel) {
         this.name = name;
         this.capability = capability;
