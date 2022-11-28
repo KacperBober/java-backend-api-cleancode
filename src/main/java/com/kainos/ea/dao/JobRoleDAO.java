@@ -15,14 +15,15 @@ public class JobRoleDAO {
         Statement st = c.createStatement();
 
         ResultSet rs = st.executeQuery(
-                "SELECT * "
-                        + "FROM JobRoles;");
+                "SELECT JobRoles.JobRole , Capabilities.Capability "
+                        + "FROM JobRoles JOIN Capabilities ON (JobRoles.CapabilityID = Capabilities.CapabilityID);");
 
         List<JobRole> jobRoles = new ArrayList<>();
 
         while (rs.next()) {
             JobRole jr = new JobRole(
-                    rs.getString("JobRole")
+                    rs.getString("JobRole"),
+                    rs.getString("Capability")
             );
 
             jobRoles.add(jr);
