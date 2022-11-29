@@ -29,21 +29,18 @@ CREATE TABLE `JobRoles` (
   `JobRole` varchar(100) DEFAULT NULL,
   `JobFamily` varchar(45) DEFAULT NULL,
   `JobRoleSpec` varchar(1000) DEFAULT NULL,
-  `JobRoleSpecLink` varchar(45) DEFAULT NULL,
+  `JobRoleSpecLink` varchar(255) DEFAULT NULL,
   `JobBandLevelID` int DEFAULT NULL,
-  `JobCapabilityID` int DEFAULT NULL,
   `JobFamilyID` int DEFAULT NULL,
   PRIMARY KEY (`JobRoleID`),
   KEY `JobBandlevelID_fk_idx` (`JobBandLevelID`),
-  KEY `JobCapabilityID_fk_idx` (`JobCapabilityID`),
   KEY `JobFamilyID_fk_idx` (`JobFamilyID`),
   CONSTRAINT `JobBandlevelID_fk` FOREIGN KEY (`JobBandLevelID`) REFERENCES `Bands` (`BandLevelID`),
-  CONSTRAINT `JobCapabilityID_fk` FOREIGN KEY (`JobCapabilityID`) REFERENCES `Capabilities` (`CapabilityID`),
   CONSTRAINT `JobFamilyID_fk` FOREIGN KEY (`JobFamilyID`) REFERENCES `JobFamily` (`FamilyID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `JobTraining` (
-  `TrainingID` tinyint NOT NULL,
+  `TrainingID` tinyint NOT NULL AUTO_INCREMENT,
   `JobBandID` int DEFAULT NULL,
    `TrainingLevel` varchar(45) DEFAULT NULL,
   `CourseName` varchar(45) DEFAULT NULL,
@@ -66,7 +63,7 @@ PRIMARY KEY (`EmployeeID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `Employees` (
-  `EmployeeID` int NOT NULL,
+  `EmployeeID` int NOT NULL AUTO_INCREMENT,
   `FirstName` varchar(50) DEFAULT NULL,
   `LastName` varchar(50) DEFAULT NULL,
   `NationalIDNumber` varchar(15) DEFAULT NULL,
@@ -97,8 +94,3 @@ CREATE TABLE `CompetencyBand` (
 
 
 
-CREATE TABLE `test` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `test` varchar(11) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
