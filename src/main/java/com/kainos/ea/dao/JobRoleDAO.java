@@ -1,6 +1,7 @@
 package com.kainos.ea.dao;
 
 import com.kainos.ea.model.JobRole;
+import com.kainos.ea.model.JobSpec;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -15,9 +16,9 @@ public class JobRoleDAO {
         Statement st = c.createStatement();
 
         ResultSet rs = st.executeQuery(
-                "SELECT JobRoles.JobRole , Capabilities.Capability, Bands.BandName "
-                        + "FROM JobRoles JOIN Capabilities ON (JobRoles.CapabilityID = Capabilities.CapabilityID)" +
-                        "JOIN Bands ON (JobRoles.BandLevelID = Bands.BandLevelID);");
+                "SELECT jr.JobRole , c.Capability, jr.JobRoleID, b.BandName "
+                        + "FROM JobRoles jr JOIN Capabilities c ON (jr.CapabilityID = c.CapabilityID) " +
+                            "JOIN Bands b ON (jr.BandLevelID = b.BandLevelID);");
 
         List<JobRole> jobRoles = new ArrayList<>();
 
@@ -25,11 +26,31 @@ public class JobRoleDAO {
             JobRole jr = new JobRole(
                     rs.getString("JobRole"),
                     rs.getString("Capability"),
-                    rs.getString("BandName"));
-
-
+                    rs.getString("BandName"),
+                    rs.getInt("JobRoleID"));
             jobRoles.add(jr);
         }
         return jobRoles;
     }
+
+    public JobSpec getJobSpec(Connection c, int job_spec_id) throws SQLException {
+        Statement st = c.createStatement();
+
+        ResultSet rs = st.executeQuery(
+                "SELECT JobRole, JobRoleSpec, JobRoleSpecLink "
+                        + "FROM JobRoles " +
+                        "WHERE JobRoleID = " + job_spec_id + ";");
+
+        while (rs.next()) {
+            JobSpec jobSpec = new JobSpec(
+                    rs.getString("JobRole"),
+                    rs.getString("JobRoleSpec"),
+                    rs.getString("JobRoleSpecLink")
+            );
+            return jobSpec;
+        }
+        return null;
+    }
+
+
 }
