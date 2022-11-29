@@ -57,11 +57,12 @@ class HRIntegrationTest {
     @Test
     void getJobSpec_shouldReturnJobSpec_whenJobRoleIDExists() {
         int job_role_id = 1;
+        String jobSpecURL = "https://kainossoftwareltd.sharepoint.com/people/Job%20Specifications/Forms/AllItems.aspx?id=%2Fpeople%2FJob%20Specifications%2FEngineering%2FJob%20profile%20%2D%20Software%20Engineer%20%28Associate%29%2Epdf&parent=%2Fpeople%2FJob%20Specifications%2FEngineering&p=true&ga=1";
         JobSpec jobSpec = new JobSpec("Software Engineer", "As a Software Engineer (Associate) in Kainos, " +
                 "you’ll be responsible for developing high quality solutions which delight our " +
                 "customers and impact the lives of users worldwide. You’ll do this whilst learning " +
                 "about new technologies and approaches, with talented colleagues" +
-                " that will help you to learn, develop and grow.", "https://kainossoftwareltd.sharepoint.com/peop");
+                " that will help you to learn, develop and grow.", jobSpecURL);
 
 
         JobSpec response = APP.client().target("http://localhost:8080/hr/job-specification/" + job_role_id)
