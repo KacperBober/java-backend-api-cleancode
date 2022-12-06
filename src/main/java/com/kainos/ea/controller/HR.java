@@ -6,6 +6,7 @@ import com.kainos.ea.exception.JobRoleDoesNotExistException;
 import com.kainos.ea.model.JobRole;
 import com.kainos.ea.service.JobRoleService;
 import com.kainos.ea.util.DatabaseConnector;
+import io.swagger.annotations.Api;
 import org.eclipse.jetty.http.HttpStatus;
 
 
@@ -23,6 +24,7 @@ import java.util.List;
 
 // @Api("API for HR app")
 @Path("/hr")
+@Api("Engineering Academy Dropwizard API")
 public class HR {
     private DatabaseConnector c;
     private static JobRoleService roleService;
