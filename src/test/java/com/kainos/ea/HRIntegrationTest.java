@@ -7,7 +7,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kainos.ea.model.JobRole;
 import com.kainos.ea.model.JobSpec;
 import io.dropwizard.configuration.ResourceConfigurationSourceProvider;
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import io.dropwizard.testing.junit5.DropwizardAppExtension;
@@ -34,13 +36,10 @@ class HRIntegrationTest {
                 new TypeReference<List<JobRole>>(){}
         );
 
-        Assertions.assertTrue(JobRoleList.size() > 0);
-        Assertions.assertEquals(JobRoleList.get(0).getCapability(), "Engineering");
-        Assertions.assertEquals(JobRoleList.get(0).getName(), "Software Engineer");
-        Assertions.assertEquals(JobRoleList.get(0).getBandName(), "Associate");
-        Assertions.assertEquals(JobRoleList.get(0).getId(), 1);
-
-
+        assertTrue(JobRoleList.size() > 0);
+        assertTrue(StringUtils.isNotBlank(JobRoleList.get(0).getCapability()));
+        assertTrue(StringUtils.isNotBlank(JobRoleList.get(0).getName()));
+        assertTrue(StringUtils.isNotBlank(JobRoleList.get(0).getBandName()));
     }
 
     @Test
@@ -51,7 +50,7 @@ class HRIntegrationTest {
                 .request()
                 .get().getStatus();
 
-        Assertions.assertEquals(response_code, 404);
+       assertEquals(404, response_code);
     }
 
     @Test
@@ -69,8 +68,8 @@ class HRIntegrationTest {
                 .request()
                 .get(JobSpec.class);
 
-        Assertions.assertEquals(jobSpec.getJob_spec(), response.getJob_spec());
-        Assertions.assertEquals(jobSpec.getJob_spec_link(), response.getJob_spec_link());
-        Assertions.assertEquals(jobSpec.getJob_role(), response.getJob_role());
+        assertEquals(jobSpec.getJob_spec(), response.getJob_spec());
+        assertEquals(jobSpec.getJob_spec_link(), response.getJob_spec_link());
+        assertEquals(jobSpec.getJob_role(), response.getJob_role());
     }
 }
