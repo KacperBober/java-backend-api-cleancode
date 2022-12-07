@@ -1,12 +1,10 @@
 package com.kainos.ea.dao;
 
 import com.kainos.ea.model.JobRole;
+import com.kainos.ea.model.JobRoleRequest;
 import com.kainos.ea.model.JobSpec;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +49,37 @@ public class JobRoleDAO {
             return jobSpec;
         }
         return null;
+    }
+
+    public int insertJobRole(Connection c, JobRoleRequest jobRoleRequest) throws SQLException {
+
+        String insertJobRoleQuery = "insert into JobRoles (JobRole, JobRoleSpec, JobRoleSpecLink, JobBandLevelID," +
+                " JobFamilyID)"
+                + " values (?, ?, ?, ?, ?)";
+
+        PreparedStatement preparedStmt = c.prepareStatement(insertJobRoleQuery, Statement.RETURN_GENERATED_KEYS);
+        preparedStmt.setString(1, jobRoleRequest.getName());
+        preparedStmt.setString(2, jobRoleRequest.getJob_spec());
+        preparedStmt.setString(3, jobRoleRequest.getJob_spec_url());
+        preparedStmt.setInt(4, jobRoleRequest.getBand_level_id());
+        preparedStmt.setInt(5, jobRoleRequest.getJob_family_id());
+
+
+        int affectedRows = preparedStmt.executeUpdate();
+
+        if (affectedRows == 0) {
+            throw new SQLException("Creating JobRole failed, no rows affected.");
+        }
+
+        int job_role_id = 0;
+
+        try (ResultSet rs = preparedStmt.getGeneratedKeys()) {
+            if (rs.next()) {
+                job_role_id = rs.getInt(1);
+            }
+        }
+
+        return job_role_id;
     }
 
 

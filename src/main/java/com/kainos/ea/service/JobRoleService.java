@@ -4,6 +4,7 @@ import com.kainos.ea.dao.JobRoleDAO;
 import com.kainos.ea.exception.DatabaseConnectionException;
 import com.kainos.ea.exception.JobRoleDoesNotExistException;
 import com.kainos.ea.model.JobRole;
+import com.kainos.ea.model.JobRoleRequest;
 import com.kainos.ea.model.JobSpec;
 import com.kainos.ea.util.DatabaseConnector;
 
@@ -34,6 +35,11 @@ public class JobRoleService {
             throw new JobRoleDoesNotExistException();
         }
         return jobSpec;
+    }
+
+    public int insertJobRole(JobRoleRequest jobRoleRequest) throws DatabaseConnectionException, SQLException {
+        Connection connection = dbConnector.getConnection();
+        return jobRoleDao.insertJobRole(connection, jobRoleRequest);
     }
 
 }
