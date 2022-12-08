@@ -1,4 +1,11 @@
 package com.kainos.ea.controller;
+import com.kainos.ea.dao.BandDAO;
+import com.kainos.ea.dao.JobFamilyDAO;
+import com.kainos.ea.dao.UserDAO;
+import com.kainos.ea.exception.DatabaseConnectionException;
+import com.kainos.ea.dao.JobRoleDAO;
+import com.kainos.ea.exception.JobRoleDoesNotExistException;
+import com.kainos.ea.model.*;
 
 import com.kainos.ea.dao.BandDAO;
 import com.kainos.ea.dao.JobFamilyDAO;
@@ -12,8 +19,13 @@ import com.kainos.ea.model.JobRoleRequest;
 import com.kainos.ea.service.BandService;
 import com.kainos.ea.service.JobFamilyService;
 import com.kainos.ea.service.JobRoleService;
+import com.kainos.ea.service.UserService;
 import com.kainos.ea.util.DatabaseConnector;
 import com.kainos.ea.validator.JobRoleValidator;
+import com.kainos.ea.validator.UserValidator;
+import com.kainos.ea.wrapper.JobRoleInfo;
+import io.swagger.annotations.Api;
+import org.eclipse.jetty.http.HttpStatus;
 import com.kainos.ea.wrapper.JobRoleInfo;
 import io.swagger.annotations.Api;
 import org.eclipse.jetty.http.HttpStatus;
@@ -34,10 +46,13 @@ import java.util.stream.Collectors;
 @Api("Engineering Academy Dropwizard API")
 public class HR {
     private DatabaseConnector c;
-    private static JobRoleService roleService;
-    private static JobRoleValidator jobRoleValidator;
-    private static JobFamilyService jobFamilyService;
-    private static BandService bandService;
+    private JobRoleService roleService;
+    private JobRoleValidator jobRoleValidator;
+    private JobFamilyService jobFamilyService;
+    private BandService bandService;
+    private UserService userService;
+    private UserValidator userValidator;
+
     public HR() {
         DatabaseConnector databaseConnector = new DatabaseConnector();
         roleService = new JobRoleService(new JobRoleDAO(), databaseConnector);
@@ -50,24 +65,8 @@ public class HR {
     @Path("/job-roles")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJobRoles() {
-
         try {
             return Response.ok(roleService.getJobRoles()).build();
-        } catch (SQLException | DatabaseConnectionException e) {
-            System.out.println(e);
-            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
-        }
-
-    }
-
-    @GET
-    @Path("/job-role-info")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getJobRolesInfo() {
-        try {
-            List<JobFamily> jobFamilies = jobFamilyService.getJobFamilies();
-            List<Band> bands = bandService.getBands();
-            return Response.ok(new JobRoleInfo(jobFamilies, bands)).build();
         } catch (SQLException | DatabaseConnectionException e) {
             System.out.println(e);
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
@@ -79,14 +78,33 @@ public class HR {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createJobRole(JobRoleRequest jobRoleRequest) {
-        try{
+        try {
             if (jobRoleValidator.isValidJobRole(jobRoleRequest)) {
-                int id = roleService.insertJobRole(jobRoleRequest);
-                return Response.status(HttpStatus.CREATED_201).entity(id).build();
-            }else{
+                try {
+                    int id = roleService.insertJobRole(jobRoleRequest);
+                    return Response.status(HttpStatus.CREATED_201).entity(id).build();
+                } catch (Exception | DatabaseConnectionException e) {
+                    System.out.println(e);
+                    return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+                }
+            } else {
                 return Response.status(HttpStatus.BAD_REQUEST_400).build();
             }
-        }catch (Exception | DatabaseConnectionException e ){
+        } catch (Exception | DatabaseConnectionException e) {
+            // TODO specific JobRoleValidation Exceptions
+            return Response.status(HttpStatus.BAD_REQUEST_400).build();
+        }
+    }
+
+    @GET
+    @Path("/job-role-info")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getJobRolesInfo() {
+        try {
+            List<JobFamily> jobFamilies = jobFamilyService.getJobFamilies();
+            List<Band> bands = bandService.getBands();
+            return Response.ok(new JobRoleInfo(jobFamilies, bands)).build();
+        } catch (SQLException | DatabaseConnectionException e) {
             System.out.println(e);
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
         }
@@ -120,6 +138,22 @@ public class HR {
         } catch (SQLException | DatabaseConnectionException e) {
             System.out.println(e);
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        }
+    }
+
+    @POST
+    @Path("/registration")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response registerUser(User user) {
+        try {
+            if (userValidator.isValidUser(user)) {
+                    int id = userService.registerUser(user);
+                    return Response.status(HttpStatus.CREATED_201).entity(id).build();
+            } else {
+                return Response.status(HttpStatus.BAD_REQUEST_400).build();
+            }
+        } catch (Exception | DatabaseConnectionException e) {
+             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
         }
     }
 }

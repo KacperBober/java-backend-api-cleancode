@@ -17,7 +17,7 @@ public class JobRoleDAO {
                 "SELECT jr.JobRole , c.Capability, jr.JobRoleID, b.BandName "
                         + "FROM JobRoles jr JOIN JobFamily jf ON (jr.JobFamilyID = jf.FamilyID) " +
                         "JOIN Bands b ON (jr.JobBandLevelID = b.BandLevelID) " +
-                        "JOIN Capabilities c ON (jf.capabilityID = c.capabilityID);" );
+                        "JOIN Capabilities c ON (jf.capabilityID = c.capabilityID);");
 
         List<JobRole> jobRoles = new ArrayList<>();
 

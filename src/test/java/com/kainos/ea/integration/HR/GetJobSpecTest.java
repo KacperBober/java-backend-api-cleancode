@@ -27,7 +27,7 @@ public class GetJobSpecTest extends HRTest{
 
     @Test
     void getJobSpec_shouldReturnJobSpec_whenJobRoleIDExists() {
-        String existingUID = "1";
+        String existingUID = "4";
         JobSpec response = APP.client().target(JOB_SPECIFICATION_URL + existingUID)
                 .request()
                 .get(JobSpec.class);

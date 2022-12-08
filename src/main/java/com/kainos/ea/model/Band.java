@@ -9,6 +9,7 @@ public class Band {
     public Band(){
 
     }
+    
     public Band(int band_level, String band_name) {
         this.band_level = band_level;
         this.band_name = band_name;

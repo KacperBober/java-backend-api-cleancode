@@ -52,7 +52,7 @@ public class JobRoleValidatorTest {
                "Software engineer does something for sure",
                "https://www.google.com/",
                5,
-                3);
+               3);
 
         Mockito.when(bandService.getBands()).thenReturn(Arrays.asList(new Band(3, 3, "band level")));
         Mockito.when(jobFamilyService.getJobFamilies()).thenReturn(Arrays.asList(new JobFamily(5, "job family")));
