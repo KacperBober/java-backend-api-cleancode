@@ -103,7 +103,6 @@ class JobRoleServiceTest {
         assertThrows(DatabaseConnectionException.class, () -> jobRoleService.getJobSpec(job_role_id));
     }
 
-
     @Test
     void insertJobRole_shouldReturnJobRoleID_whenDAOReturnsJobRoleID() throws SQLException, DatabaseConnectionException {
         JobRoleRequest jobRoleRequest = new JobRoleRequest();
@@ -136,4 +135,17 @@ class JobRoleServiceTest {
                 () -> jobRoleService.insertJobRole(jobRoleRequest));
     }
 
+    @Test
+    void deleteJobRole_shouldThrowDatabaseConnectionException_whenDatabaseConnectorThrowsDatabaseConnectionException() throws SQLException, DatabaseConnectionException {
+        final int job_role_id = 1;
+        Mockito.when(databaseConnector.getConnection()).thenThrow(DatabaseConnectionException.class);
+        assertThrows(DatabaseConnectionException.class, () -> jobRoleService.deleteJobRole(job_role_id));
+    }
+
+    @Test
+    void deleteJobRole_shouldThrowSQLExceptionException_whenDAOThrowsSQLException() throws SQLException, DatabaseConnectionException {
+        final int jobRoleID = 1;
+        Mockito.doThrow(SQLException.class).when(jobRoleDAO).deleteJobRole(conn, jobRoleID);
+        assertThrows(SQLException.class, () -> jobRoleService.deleteJobRole(jobRoleID));
+    }
 }

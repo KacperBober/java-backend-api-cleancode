@@ -42,4 +42,8 @@ public class JobRoleService {
         return jobRoleDao.insertJobRole(connection, jobRoleRequest);
     }
 
+    public void deleteJobRole(int jobRoleID) throws DatabaseConnectionException, SQLException {
+        Connection connection = dbConnector.getConnection();
+        jobRoleDao.deleteJobRole(connection, jobRoleID);
+    }
 }

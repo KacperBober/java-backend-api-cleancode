@@ -3,6 +3,12 @@ package com.kainos.ea.validator;
 import com.kainos.ea.exception.DatabaseConnectionException;
 import com.kainos.ea.model.Band;
 import com.kainos.ea.model.JobFamily;
+import com.kainos.ea.model.JobRole;
+import com.kainos.ea.model.JobRoleRequest;
+import com.kainos.ea.service.BandService;
+import com.kainos.ea.service.JobFamilyService;
+import com.kainos.ea.service.JobRoleService;
+
 import com.kainos.ea.model.JobRoleRequest;
 import com.kainos.ea.service.BandService;
 import com.kainos.ea.service.JobFamilyService;
@@ -19,16 +25,18 @@ import java.util.stream.Collectors;
 
 public class JobRoleValidator {
 
-    public JobFamilyService jobFamilyService;
-    public BandService bandService;
+    private JobFamilyService jobFamilyService;
+    private BandService bandService;
+    private JobRoleService jobRoleService;
 
-    private final static int MAX_NAME_LENGTH = 100;
-    private final static int MAX_JOB_SPEC_LENGTH = 1000;
-    private final static int MAX_JOB_SPEC_URL_LENGTH = 1000;
+    private static final int MAX_NAME_LENGTH = 100;
+    private static final int MAX_JOB_SPEC_LENGTH = 1000;
+    private static final int MAX_JOB_SPEC_URL_LENGTH = 1000;
 
-    public JobRoleValidator(JobFamilyService jobFamilyService, BandService bandService) {
+    public JobRoleValidator(JobFamilyService jobFamilyService, BandService bandService, JobRoleService jobRoleService) {
         this.jobFamilyService = jobFamilyService;
         this.bandService = bandService;
+        this.jobRoleService = jobRoleService;
     }
 
     public boolean isValidJobRole(JobRoleRequest jobRoleRequest) throws DatabaseConnectionException, SQLException {
@@ -44,6 +52,10 @@ public class JobRoleValidator {
         boolean isURLAValidLink = isValidURL(jobRoleRequest);
 
         return isURLAValidLink && isNameLengthValid && isJobSpecLengthValid && isJobSpecURLLengthValid && isJobFamilyIDValid && isBandIDValid ;
+    }
+
+    public boolean doesJobRoleExist(int jobRoleID) throws DatabaseConnectionException, SQLException {
+        return jobRoleService.getJobRoles().parallelStream().map(JobRole::getId).collect(Collectors.toList()).contains(jobRoleID);
     }
 
     public List<Integer> getBandIDs() throws DatabaseConnectionException, SQLException {

@@ -43,7 +43,7 @@ public class HR {
         roleService = new JobRoleService(new JobRoleDAO(), databaseConnector);
         jobFamilyService = new JobFamilyService(new JobFamilyDAO(), databaseConnector);
         bandService = new BandService(new BandDAO(), databaseConnector);
-        jobRoleValidator = new JobRoleValidator(jobFamilyService, bandService);
+        jobRoleValidator = new JobRoleValidator(jobFamilyService, bandService, roleService);
     }
 
     @GET
@@ -104,6 +104,22 @@ public class HR {
         } catch (JobRoleDoesNotExistException e) {
             return Response.status(HttpStatus.NOT_FOUND_404).build();
         }
+    }
 
+    @DELETE
+    @Path("/job-roles/{JobRoleID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteJobRole(@PathParam("JobRoleID") int jobRoleId) {
+        try {
+            if (jobRoleValidator.doesJobRoleExist(jobRoleId)) {
+                roleService.deleteJobRole(jobRoleId);
+                return Response.status(HttpStatus.NO_CONTENT_204).build();
+            }else{
+                return Response.status(HttpStatus.NOT_FOUND_404).build();
+            }
+        } catch (SQLException | DatabaseConnectionException e) {
+            System.out.println(e);
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        }
     }
 }

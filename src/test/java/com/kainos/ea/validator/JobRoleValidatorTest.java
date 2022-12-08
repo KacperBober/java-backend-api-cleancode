@@ -2,6 +2,11 @@ package com.kainos.ea.validator;
 import com.kainos.ea.exception.DatabaseConnectionException;
 import com.kainos.ea.model.Band;
 import com.kainos.ea.model.JobFamily;
+import com.kainos.ea.model.JobRole;
+import com.kainos.ea.model.JobRoleRequest;
+import com.kainos.ea.service.BandService;
+import com.kainos.ea.service.JobFamilyService;
+import com.kainos.ea.service.JobRoleService;
 import com.kainos.ea.model.JobRoleRequest;
 import com.kainos.ea.service.BandService;
 import com.kainos.ea.service.JobFamilyService;
@@ -19,9 +24,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JobRoleValidatorTest {
+    
     BandService bandService = Mockito.mock(BandService.class);
     JobFamilyService jobFamilyService = Mockito.mock(JobFamilyService.class);
-    JobRoleValidator jobRoleValidator = new JobRoleValidator(jobFamilyService, bandService);
+    JobRoleService jobRoleService = Mockito.mock(JobRoleService.class);
+    JobRoleValidator jobRoleValidator = new JobRoleValidator(jobFamilyService, bandService, jobRoleService);
 
     @Test
     public void isValidJobRole_shouldReturnTrue_whenValidJobRole () throws DatabaseConnectionException, SQLException {
@@ -249,6 +256,25 @@ public class JobRoleValidatorTest {
     }
 
     @Test
+    public void isValidJobRoleID_shouldReturnTrue_whenValidJobRoleIDPassed () throws DatabaseConnectionException, SQLException {
+        final int jobRoleID = 1;
+        final JobRole jobRole = new JobRole("name", "cap", "band", jobRoleID);
+
+        Mockito.when(jobRoleService.getJobRoles()).thenReturn(Arrays.asList(jobRole));
+        assertTrue(jobRoleValidator.doesJobRoleExist(jobRoleID));
+    }
+
+    @Test
+    public void isValidJobRoleID_shouldReturnFalse_whenNonValidJobRoleIDPassed () throws DatabaseConnectionException, SQLException {
+        final int jobRoleID = -1;
+        final JobRole jobRole = new JobRole("name", "cap", "band", 1);
+
+        Mockito.when(jobRoleService.getJobRoles()).thenReturn(Arrays.asList(jobRole));
+        assertFalse(jobRoleValidator.doesJobRoleExist(jobRoleID));
+
+    }
+
+    @Test    
     public void isValidJobRole_shouldReturnFalse_whenInvalidURL () throws DatabaseConnectionException, SQLException {
         final JobRoleRequest jobRoleRequest = new JobRoleRequest(
                 "Software Engineer",

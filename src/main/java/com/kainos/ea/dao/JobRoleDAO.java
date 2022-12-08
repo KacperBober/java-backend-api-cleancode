@@ -82,5 +82,9 @@ public class JobRoleDAO {
         return job_role_id;
     }
 
-
+    public void deleteJobRole(Connection c, int jobRoleID) throws SQLException {
+        Statement st = c.createStatement();
+        String query = "DELETE from JobRoles where JobRoleID = " + jobRoleID + ";";
+        st.execute(query);
+    }
 }
