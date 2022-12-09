@@ -59,6 +59,8 @@ public class HR {
         jobFamilyService = new JobFamilyService(new JobFamilyDAO(), databaseConnector);
         bandService = new BandService(new BandDAO(), databaseConnector);
         jobRoleValidator = new JobRoleValidator(jobFamilyService, bandService, roleService);
+        userValidator = new UserValidator();
+        userService = new UserService(databaseConnector, new UserDAO());
     }
 
     @GET
